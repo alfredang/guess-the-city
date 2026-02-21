@@ -1,21 +1,15 @@
 import { CONFIG } from "./config.js";
 
-function getApiKey() {
-  return localStorage.getItem("unsplash_api_key") || CONFIG.UNSPLASH_ACCESS_KEY;
-}
-
 export function hasApiKey() {
-  return !!getApiKey();
+  // Always true — API key is handled server-side by the proxy
+  return true;
 }
 
 export function saveApiKey(key) {
-  localStorage.setItem("unsplash_api_key", key.trim());
+  // No-op — key is server-side
 }
 
 export async function fetchCityPhoto(query) {
-  const apiKey = getApiKey();
-  if (!apiKey) return { error: "no_key" };
-
   const url = new URL(`${CONFIG.UNSPLASH_BASE_URL}/search/photos`);
   url.searchParams.set("query", query);
   url.searchParams.set("per_page", "10");
@@ -34,9 +28,7 @@ export async function fetchCityPhoto(query) {
   }
 
   try {
-    const response = await fetch(url.toString(), {
-      headers: { Authorization: `Client-ID ${apiKey}` },
-    });
+    const response = await fetch(url.toString());
 
     if (response.status === 401) return { error: "invalid_key" };
     if (response.status === 403) return { error: "rate_limited" };

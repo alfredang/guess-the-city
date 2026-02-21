@@ -187,26 +187,7 @@ function escapeHtml(str) {
 
 // ---- Event listeners ----
 $("#btn-start").addEventListener("click", () => {
-  if (hasApiKey()) {
-    startGame();
-  } else {
-    showScreen("setup");
-  }
-});
-
-$("#btn-save-key").addEventListener("click", () => {
-  const key = $("#input-api-key").value.trim();
-  if (!key) {
-    showSetupError("Please enter an API key.");
-    return;
-  }
-  saveApiKey(key);
-  $("#setup-error").hidden = true;
   startGame();
-});
-
-$("#input-api-key").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") $("#btn-save-key").click();
 });
 
 btnNext.addEventListener("click", () => {
